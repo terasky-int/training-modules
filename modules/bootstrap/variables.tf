@@ -103,11 +103,6 @@ variable "groups" {
     error_message = "The group group_org_admins is invalid, it must be a valid email"
   }
 
-  validation {
-    condition     = var.groups.required_groups.group_billing_admins != ""
-    error_message = "The group group_billing_admins is invalid, it must be a valid email"
-  }
-
 }
 
 variable "bootstrap_folder_name" {
