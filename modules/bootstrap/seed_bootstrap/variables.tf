@@ -39,10 +39,10 @@ variable "group_org_admins" {
   type        = string
 }
 
-variable "group_billing_admins" {
-  description = "Google Group for GCP Billing Administrators"
-  type        = string
-}
+# variable "group_billing_admins" {
+#   description = "Google Group for GCP Billing Administrators"
+#   type        = string
+# }
 
 variable "default_region" {
   description = "Default region to create resources where applicable."

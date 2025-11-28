@@ -196,11 +196,11 @@ resource "google_organization_iam_member" "org_admins_group" {
   Organization permissions for billing admins.
  ***********************************************/
 
-resource "google_organization_iam_member" "org_billing_admin" {
-  org_id = var.org_id
-  role   = "roles/billing.admin"
-  member = "group:${var.group_billing_admins}"
-}
+# resource "google_organization_iam_member" "org_billing_admin" {
+#   org_id = var.org_id
+#   role   = "roles/billing.admin"
+#   member = "group:${var.group_billing_admins}"
+# }
 
 /***********************************************
   Organization permissions for Terraform.
