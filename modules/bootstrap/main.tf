@@ -14,7 +14,7 @@ resource "google_folder" "bootstrap" {
 }
 
 module "seed_bootstrap" {
-  source  = "../seed_bootstrap"
+  source  = "./seed_bootstrap"
   org_id                         = var.org_id
   folder_id                      = google_folder.bootstrap.id
   project_id                     = "${var.project_prefix}-seed"
