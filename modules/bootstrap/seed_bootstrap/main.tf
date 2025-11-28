@@ -156,13 +156,13 @@ resource "google_storage_bucket" "org_terraform_state" {
   granting billing account and project creation.
  ***********************************************/
 
-resource "google_organization_iam_binding" "billing_creator" {
-  org_id = var.org_id
-  role   = "roles/billing.creator"
-  members = [
-    "group:${var.group_billing_admins}",
-  ]
-}
+# resource "google_organization_iam_binding" "billing_creator" {
+#   org_id = var.org_id
+#   role   = "roles/billing.creator"
+#   members = [
+#     "group:${var.group_billing_admins}",
+#   ]
+# }
 
 resource "google_organization_iam_binding" "project_creator" {
   count = local.is_organization ? 1 : 0
