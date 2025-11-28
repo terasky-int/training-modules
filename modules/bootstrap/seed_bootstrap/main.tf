@@ -58,8 +58,8 @@ resource "google_folder_iam_member" "tmp_project_creator" {
 *******************************************/
 
 module "seed_project" {
-  source                      = "terraform-google-modules/project-factory/google"
-  version                     = "~> 18.0"
+  source                      = "./google"
+
   name                        = local.seed_project_id
   random_project_id           = var.random_suffix
   disable_services_on_destroy = false
@@ -75,8 +75,7 @@ module "seed_project" {
 }
 
 module "enable_cross_project_service_account_usage" {
-  source  = "terraform-google-modules/org-policy/google"
-  version = "~> 6.0"
+  source  = "./org-policy"
 
   project_id  = module.seed_project.project_id
   policy_for  = "project"
