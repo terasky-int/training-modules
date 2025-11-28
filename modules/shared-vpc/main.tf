@@ -1,5 +1,5 @@
 module "vpc_host" {
-  source                      = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-vpc?ref=v40.0.0"
+  source                      = "./net-vpc"#"github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-vpc?ref=v40.0.0"
   project_id                  = var.project
   name                        = var.vpc_name
   subnets                     = var.subnets
@@ -19,7 +19,7 @@ locals {
 }
 
 module "addresses" {
-  source             = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-address?ref=v40.0.0"
+  source             = "./net-address"#"github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-address?ref=v40.0.0"
   project_id         = var.project
   external_addresses = local.external_addresses
 
@@ -27,7 +27,7 @@ module "addresses" {
 
 module "nat" {
   for_each                  = { for index, nat in var.cloud_nat : nat.name => nat }
-  source                    = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-cloudnat?ref=v40.0.0"
+  source                    = "./net-cloudnat"#"github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-cloudnat?ref=v40.0.0"
   name                      = each.value.name
   project_id                = var.project
   region                    = each.value.region
@@ -44,7 +44,7 @@ module "nat" {
 }
 
 module "firewall" {
-  source               = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-vpc-firewall?ref=v40.0.0"
+  source               = "./net-vpc-firewall"#"github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-vpc-firewall?ref=v40.0.0"
   project_id           = var.project
   network              = var.vpc_name
   default_rules_config = var.default_rules_config
