@@ -249,11 +249,11 @@ resource "google_secret_manager_secret_version" "secret_version_basic" {
   secret = google_secret_manager_secret.secret["${local.prefix}${var.name}-${each.value.username}-${each.value.database}"].id
 
   secret_data = local.is_postgres ? (
-    "Host=${data.google_compute_address.psc.address}:5432;Database=${each.value.database};Username=${each.value.username};Password=${each.value.password};SSL Mode=Require;Trust Server Certificate=true"
+    ":Database=${each.value.database};Username=${each.value.username};Password=${each.value.password};SSL Mode=Require;Trust Server Certificate=true"
     ) : local.is_mysql ? (
     "mysql://${each.value.username}:${each.value.password}@${data.google_compute_address.psc.address}:3306/${each.value.database}"
     ) : (
-    "Host=${data.google_compute_address.psc.address}:5432;Database=${each.value.database};Username=${each.value.username};Password=${each.value.password};SSL Mode=Require;Trust Server Certificate=true"
+    "Database=${each.value.database};Username=${each.value.username};Password=${each.value.password};SSL Mode=Require;Trust Server Certificate=true"
   )
 }
 
