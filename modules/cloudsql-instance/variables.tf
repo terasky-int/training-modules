@@ -15,15 +15,15 @@ variable "authorized_networks" {
   default     = null
 }
 
-variable "psc_subnet_name" {
-  description = "PSC subnet name where to place ip of cloud sql"
-  type        = string
-}
+# variable "psc_subnet_name" {
+#   description = "PSC subnet name where to place ip of cloud sql"
+#   type        = string
+# }
 
-variable "psc_vpc_name" {
-  description = "PSC vpc name where to place ip of cloud sql"
-  type        = string
-}
+# variable "psc_vpc_name" {
+#   description = "PSC vpc name where to place ip of cloud sql"
+#   type        = string
+# }
 
 variable "availability_type" {
   description = "Availability type for the primary replica. Either `ZONAL` or `REGIONAL`."
