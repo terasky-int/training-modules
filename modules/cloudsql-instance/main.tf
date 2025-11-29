@@ -229,24 +229,22 @@ resource "google_sql_ssl_cert" "client_certificates" {
 #   allow_psc_global_access = true
 # }
 
-resource "google_secret_manager_secret" "secret" {
+resource "google_secret_manager_regional_secret" "secret" {
   for_each = {
     for ua in local.users_access : "${local.prefix}${var.name}-${ua.username}-${ua.database}" => ua
   }
 
   project   = var.project_id
+  location = var.region
   secret_id = "${local.prefix}${var.name}-${each.value.username}-${each.value.database}"
-  replication {
-    auto {}
-  }
   depends_on = [google_sql_user.users]
 }
 
-resource "google_secret_manager_secret_version" "secret_version_basic" {
+resource "google_secret_manager_regional_secret_version" "secret_version_basic" {
   for_each = {
     for ua in local.users_access : "${local.prefix}${var.name}-${ua.username}-${ua.database}" => ua
   }
-  secret = google_secret_manager_secret.secret["${local.prefix}${var.name}-${each.value.username}-${each.value.database}"].id
+  secret = google_secret_manager_regional_secret.secret["${local.prefix}${var.name}-${each.value.username}-${each.value.database}"].id
 
   secret_data = local.is_postgres ? (
     ":Database=${each.value.database};Username=${each.value.username};Password=${each.value.password};SSL Mode=Require;Trust Server Certificate=true"
