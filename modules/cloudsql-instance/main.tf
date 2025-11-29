@@ -251,7 +251,7 @@ resource "google_secret_manager_secret_version" "secret_version_basic" {
   secret_data = local.is_postgres ? (
     ":Database=${each.value.database};Username=${each.value.username};Password=${each.value.password};SSL Mode=Require;Trust Server Certificate=true"
     ) : local.is_mysql ? (
-    "mysql://${each.value.username}:${each.value.password}@${data.google_compute_address.psc.address}:3306/${each.value.database}"
+    "mysql://${each.value.username}:${each.value.password}@:3306/${each.value.database}"
     ) : (
     "Database=${each.value.database};Username=${each.value.username};Password=${each.value.password};SSL Mode=Require;Trust Server Certificate=true"
   )
