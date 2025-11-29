@@ -1,0 +1,63 @@
+resource "google_compute_backend_bucket" "default" {
+  for_each = var.backend_buckets_config
+  project = (
+    each.value.project_id == null
+    ? var.project_id
+    : each.value.project_id
+  )
+  name                    = "${var.name}-${each.key}"
+  bucket_name             = each.value.bucket_name
+  compression_mode        = each.value.compression_mode
+  custom_response_headers = each.value.custom_response_headers
+  description             = each.value.description
+  edge_security_policy    = each.value.edge_security_policy
+  enable_cdn              = each.value.enable_cdn
+
+  dynamic "cdn_policy" {
+    for_each = each.value.cdn_policy == null ? [] : [each.value.cdn_policy]
+    iterator = p
+    content {
+      cache_mode                   = p.value.cache_mode
+      client_ttl                   = p.value.client_ttl
+      default_ttl                  = p.value.default_ttl
+      max_ttl                      = p.value.max_ttl
+      negative_caching             = p.value.negative_caching
+      request_coalescing           = p.value.request_coalescing
+      serve_while_stale            = p.value.serve_while_stale
+      signed_url_cache_max_age_sec = p.value.signed_url_cache_max_age_sec
+      dynamic "bypass_cache_on_request_headers" {
+        for_each = (
+          p.value.bypass_cache_on_request_headers == null
+          ? []
+          : [p.value.bypass_cache_on_request_headers]
+        )
+        iterator = h
+        content {
+          header_name = h.value
+        }
+      }
+      dynamic "cache_key_policy" {
+        for_each = (
+          p.value.cache_key_policy == null ? [] : [p.value.cache_key_policy]
+        )
+        iterator = ckp
+        content {
+          include_http_headers   = ckp.value.include_http_headers
+          query_string_whitelist = ckp.value.query_string_whitelist
+        }
+      }
+      dynamic "negative_caching_policy" {
+        for_each = (
+          p.value.negative_caching_policy == null
+          ? []
+          : [p.value.negative_caching_policy]
+        )
+        iterator = ncp
+        content {
+          code = ncp.value.code
+          ttl  = ncp.value.ttl
+        }
+      }
+    }
+  }
+}
