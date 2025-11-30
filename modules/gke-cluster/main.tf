@@ -2,7 +2,7 @@ locals {
   workload_identity_config = !var.enable_workload_identity ? [] : var.identity_namespace == null ? [{
     identity_namespace = "${var.project}.svc.id.goog" }] : [{ identity_namespace = var.identity_namespace
   }]
-  cluster_name       = "gke-${var.env}-${var.name}${var.sufix}"
+  cluster_name       = "${var.name}${var.sufix}"
   latest_version     = data.google_container_engine_versions.location.latest_master_version
   kubernetes_version = var.kubernetes_version != "latest" ? var.kubernetes_version : local.latest_version
 }
