@@ -251,11 +251,21 @@ resource "google_project_iam_member" "gke_host_agent" {
 }
 
 resource "google_compute_subnetwork_iam_member" "member" {
+  count   = var.shared_vpc_project != null ? 1 : 0
   subnetwork = var.subnetwork
   project    = var.shared_vpc_project # This project var is for the subnetwork IAM, potentially different from service projects
   region     = var.region
   role       = "roles/compute.networkUser"
   member     = "serviceAccount:${module.gke_service_account.email}"
+}
+
+resource "google_compute_subnetwork_iam_member" "host" {
+  count   = var.shared_vpc_project != null ? 1 : 0
+  subnetwork = var.subnetwork
+  project    = var.shared_vpc_project # This project var is for the subnetwork IAM, potentially different from service projects
+  region     = var.region
+  role       = "roles/compute.networkUser"
+  member     = "serviceAccount:service-${data.google_project.project.number}@container-engine-robot.iam.gserviceaccount.com"
 }
 
 
@@ -368,7 +378,7 @@ module "gke_service_account" {
   # When using these modules in your own templates, you will need to use a Git URL with a ref attribute that pins you
   # to a specific version of the modules, such as the following example:
   source                = "github.com/gruntwork-io/terraform-google-gke.git//modules/gke-service-account?ref=v0.3.8"
-  name                  = "${var.env}-${var.cluster_service_account_name}${var.sufix}"
+  name                  = "${var.cluster_service_account_name}${var.sufix}"
   project               = var.project
   description           = var.cluster_service_account_description
   service_account_roles = var.service_account_roles
