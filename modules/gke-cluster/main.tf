@@ -101,7 +101,7 @@ resource "google_container_cluster" "cluster" {
   # part of Create. This leaves us in our desired state- with a cluster master
   # with no node pools.
   remove_default_node_pool = true
-
+  deletion_protection = false
   initial_node_count    = 1
   enable_shielded_nodes = var.enable_shielded_nodes
 
