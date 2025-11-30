@@ -162,7 +162,6 @@ resource "google_container_cluster" "cluster" {
     enabled = var.enable_vertical_pod_autoscaling
   }
 
-
   dynamic "gateway_api_config" {
     for_each = var.enable_gateway_api ? [""] : []
     content {
@@ -238,6 +237,7 @@ resource "google_container_cluster" "cluster" {
   }
 
   resource_labels = var.resource_labels
+  depends_on = [ google_project_iam_member.gke_host_agent ]
 }
 
 resource "google_project_iam_member" "gke_host_agent" {
