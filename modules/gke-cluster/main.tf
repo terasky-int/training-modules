@@ -237,7 +237,10 @@ resource "google_container_cluster" "cluster" {
   }
 
   resource_labels = var.resource_labels
-  depends_on = [ google_project_iam_member.gke_host_agent ]
+  depends_on = [ 
+    google_project_iam_member.gke_host_agent,
+    google_compute_subnetwork_iam_member.member
+  ]
 }
 
 resource "google_project_iam_member" "gke_host_agent" {
@@ -246,6 +249,15 @@ resource "google_project_iam_member" "gke_host_agent" {
   role    = "roles/container.hostServiceAgentUser"
   member  = "serviceAccount:service-${data.google_project.project.number}@container-engine-robot.iam.gserviceaccount.com"
 }
+
+resource "google_compute_subnetwork_iam_member" "member" {
+  subnetwork = var.subnetwork
+  project    = var.shared_vpc_project # This project var is for the subnetwork IAM, potentially different from service projects
+  region     = var.region
+  role       = roles/compute.networkUser
+  member     = "serviceAccount:${module.gke_service_account.email}"
+}
+
 
 # Get available master versions in our location to determine the latest version
 data "google_container_engine_versions" "location" {
