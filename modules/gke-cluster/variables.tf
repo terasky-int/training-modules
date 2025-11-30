@@ -346,7 +346,7 @@ variable "shared_vpc_project" {
 variable "enable_shielded_nodes" {
   description = "Enable shielded nodes"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "monitoring_config" {
