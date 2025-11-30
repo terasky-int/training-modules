@@ -254,7 +254,7 @@ resource "google_compute_subnetwork_iam_member" "member" {
   subnetwork = var.subnetwork
   project    = var.shared_vpc_project # This project var is for the subnetwork IAM, potentially different from service projects
   region     = var.region
-  role       = roles/compute.networkUser
+  role       = "roles/compute.networkUser"
   member     = "serviceAccount:${module.gke_service_account.email}"
 }
 
