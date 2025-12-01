@@ -15,15 +15,15 @@ variable "authorized_networks" {
   default     = null
 }
 
-# variable "psc_subnet_name" {
-#   description = "PSC subnet name where to place ip of cloud sql"
-#   type        = string
-# }
+variable "psc_subnet_name" {
+  description = "PSC subnet name where to place ip of cloud sql"
+  type        = string
+}
 
-# variable "psc_vpc_name" {
-#   description = "PSC vpc name where to place ip of cloud sql"
-#   type        = string
-# }
+variable "psc_vpc_name" {
+  description = "PSC vpc name where to place ip of cloud sql"
+  type        = string
+}
 
 variable "availability_type" {
   description = "Availability type for the primary replica. Either `ZONAL` or `REGIONAL`."
@@ -246,4 +246,10 @@ variable "ssl" {
     condition     = var.ssl.mode == null || var.ssl.mode == "ALLOW_UNENCRYPTED_AND_ENCRYPTED" || var.ssl.mode == "ENCRYPTED_ONLY" || var.ssl.mode == "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
     error_message = "The variable mode can be ALLOW_UNENCRYPTED_AND_ENCRYPTED, ENCRYPTED_ONLY for all, or TRUSTED_CLIENT_CERTIFICATE_REQUIRED for PostgreSQL or MySQL."
   }
+}
+
+variable "shared_vpc_project" {
+  description = "Shared VPC projec id"
+  type = string
+  default = null
 }

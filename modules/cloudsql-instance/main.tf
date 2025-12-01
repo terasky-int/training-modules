@@ -63,8 +63,7 @@ resource "google_sql_database_instance" "primary" {
     ip_configuration {
       psc_config {
         psc_enabled               = true
-        allowed_consumer_projects = [var.project_id]
-
+        allowed_consumer_projects =concat([var.project_id],[var.shared_vpc_project])
       }
       ipv4_enabled                                  = false
       enable_private_path_for_google_cloud_services = var.enable_private_path_for_google_cloud_services
@@ -203,31 +202,31 @@ resource "google_sql_ssl_cert" "client_certificates" {
   common_name = each.key
 }
 
-# resource "google_compute_address" "default" {
-#   name         = "${local.prefix}${var.name}-psc-ip"
-#   region       = var.region
-#   project      = var.project_id
-#   address_type = "INTERNAL"
-#   subnetwork   = var.psc_subnet_name
-# }
+resource "google_compute_address" "default" {
+  name         = "${var.name}-psc-ip"
+  region       = var.region
+  project      = var.shared_vpc_project
+  address_type = "INTERNAL"
+  subnetwork   = var.psc_subnet_name
+}
 
-# data "google_compute_address" "psc" {
-#   name       = "${local.prefix}${var.name}-psc-ip"
-#   project    = var.project_id
-#   region     = var.region
-#   depends_on = [google_compute_address.default]
-# }
+data "google_compute_address" "psc" {
+  name       = "${var.name}-psc-ip"
+  project    = var.shared_vpc_project
+  region     = var.region
+  depends_on = [google_compute_address.default]
+}
 
-# resource "google_compute_forwarding_rule" "default" {
-#   name                    = "${local.prefix}${var.name}-psc-sql-endpoint"
-#   network                 = var.psc_vpc_name
-#   project                 = var.project_id
-#   region                  = var.region
-#   ip_address              = google_compute_address.default.self_link
-#   load_balancing_scheme   = ""
-#   target                  = google_sql_database_instance.primary.psc_service_attachment_link
-#   allow_psc_global_access = true
-# }
+resource "google_compute_forwarding_rule" "default" {
+  name                    = "${var.name}-psc-sql-endpoint"
+  network                 = var.psc_vpc_name
+  project                 = var.shared_vpc_project
+  region                  = var.region
+  ip_address              = google_compute_address.default.self_link
+  load_balancing_scheme   = ""
+  target                  = google_sql_database_instance.primary.psc_service_attachment_link
+  allow_psc_global_access = true
+}
 
 resource "google_secret_manager_regional_secret" "secret" {
   for_each = {
