@@ -40,7 +40,7 @@ locals {
 resource "google_sql_database_instance" "primary" {
   provider            = google-beta
   project             = var.project_id
-  name                = "${local.prefix}${var.name}"
+  name                = "${var.name}"
   region              = var.region
   database_version    = var.database_version
   encryption_key_name = var.encryption_key_name
