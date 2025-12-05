@@ -167,6 +167,11 @@ resource "google_org_policy_policy" "default" {
       }
     }
   }
+
+import {
+  to = google_org_policy_policy.default
+  id = "${var.organization_id}/policies/${each.value}"
+}
   depends_on = [
     google_organization_iam_binding.authoritative,
     google_organization_iam_binding.bindings,
