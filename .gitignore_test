@@ -1,0 +1,41 @@
+# Local .terraform directories
+**/.terraform/*
+.terragrunt-cache/*
+.terraform
+.terraform.lock.hcl
+# Terraform state files
+*.tfstate
+*.tfstate.*
+*.tfplan
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Ignore override files as they are usually local
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore Terraform variables files that store sensitive data
+*.tfvars
+*.tfvars.json
+
+# Ignore Terragrunt cache directories
+**/.terragrunt-cache/
+
+# Ignore Terragrunt debug logs
+terragrunt-debug.log
+
+# Ignore CLI local configuration files
+.terraformrc
+terraform.rc
+
+# Ignore backup files
+*.bak
+*.tmp
+
+# Ignore local mac DS Store files
+
+*.DS_Store
