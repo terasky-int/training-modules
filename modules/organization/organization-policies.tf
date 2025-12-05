@@ -168,10 +168,7 @@ resource "google_org_policy_policy" "default" {
     }
   }
 
-import {
-  to = google_org_policy_policy.default
-  id = "${var.organization_id}/policies/${each.value}"
-}
+
   depends_on = [
     google_organization_iam_binding.authoritative,
     google_organization_iam_binding.bindings,
@@ -181,4 +178,12 @@ import {
     google_tags_tag_key.default,
     google_tags_tag_value.default,
   ]
+}
+
+import {
+  for_each = toset([
+    for k, v in local.org_policies_temp : trimprefix(k, "dry_run:")
+  ])
+  to = google_org_policy_policy.default[each.key]
+  id = "${var.organization_id}/policies/${each.value}"
 }
