@@ -180,10 +180,10 @@ resource "google_org_policy_policy" "default" {
   ]
 }
 
-import {
-  for_each = toset([
-    for k, v in local.org_policies_temp : trimprefix(k, "dry_run:")
-  ])
-  to = google_org_policy_policy.default[each.key]
-  id = "${var.organization_id}/policies/${each.value}"
-}
+# import {
+#   for_each = toset([
+#     for k, v in local.org_policies_temp : trimprefix(k, "dry_run:")
+#   ])
+#   to = google_org_policy_policy.default[each.key]
+#   id = "${var.organization_id}/policies/${each.value}"
+# }
